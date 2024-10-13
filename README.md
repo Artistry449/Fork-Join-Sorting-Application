@@ -1,4 +1,4 @@
-# ForkJoinSortingApplication
+# Fork Join Sorting Application
 
 Үйлдлийн систем 2024/2025A хичээлийн бие даалтын ажил
 
