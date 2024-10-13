@@ -60,15 +60,10 @@ class ParentTask <T extends Comparable<T>> extends RecursiveAction{
             }
             else {
                 int mid = ((right - left) / 2) + left;
-                // MergeSortApp<T> leftTask = new MergeSortApp<>(appData, left, mid);
-                // MergeSortApp<T> rightTask = new MergeSortApp<>(appData, mid+1, right);
-
-                // invokeAll(leftTask, rightTask);
-
-                // merge(appData, left, mid, right);
-
                 MergeSortApp<T> leftTask = new MergeSortApp<>(appData, left, mid);
                 MergeSortApp<T> rightTask = new MergeSortApp<>(appData, mid+1, right);
+
+                // invokeAll(leftTask, rightTask);
 
                 leftTask.fork();
                 rightTask.fork();
@@ -141,7 +136,13 @@ class ParentTask <T extends Comparable<T>> extends RecursiveAction{
                 QuickSortApp leftTask = new QuickSortApp<>(appData, left, pivot - 1);
                 QuickSortApp rightTask = new QuickSortApp<>(appData, pivot + 1, right);
 
-                invokeAll(leftTask, rightTask);
+                // invokeAll(leftTask, rightTask);
+
+                leftTask.fork();
+                rightTask.fork();
+
+                leftTask.join();
+                rightTask.join();
             }
         }
 
