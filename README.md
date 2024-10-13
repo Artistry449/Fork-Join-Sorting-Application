@@ -4,7 +4,7 @@
 
 Энэхүү программ нь тодорхой дата-г(энэ жишээнд тоон утгатай массив) хуваагаад эзэмших(Divide and Conquer) алгоритмаар олон урсгалт(multithread) программ бичихэд оршино. Бодлогын тайлбарыг доор хавсаргав.
 
-# Бодлогынтайлбар(эх сурвалж: Operating System Concepts 10th edition)
+# Бодлогын тайлбар(эх сурвалж: Operating System Concepts 10th edition)
 Implement the preceding project (Multithreaded Sorting Application) using Java’s fork-join parallelism API. This project will be developed in two different versions. Each version will implement a different divide-and-conquer sorting algorithm:
 
 1. Quicksort
