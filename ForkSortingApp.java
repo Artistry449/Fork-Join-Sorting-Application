@@ -1,14 +1,96 @@
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.*;;
 
-class ForkSortingApp {
-    Scanner scanner;
-    int[] testData;
-    final int THRESHOLD;
+class ForkSortingApp extends RecursiveAction{
+    private int[] testData;
+    private int userThresholdInput;
+    private int userMaxSizeInput;
+    final int THRESHOLD = 100;
 
-    public ForkSortingApp(){
-        this.THRESHOLD = 100;
-        scanner = new Scanner(System.in);
+    public ForkSortingApp(int userThresholdInput, int userMaxSizeInput){
+        this.userThresholdInput = userThresholdInput;
+        this.userMaxSizeInput = userMaxSizeInput;
+    }
+
+    @Override
+    protected void compute() {
+            // Энгийн эрэмбэлэлтийн алгоритм(Insertion Sort)
+            if(userThresholdInput < this.THRESHOLD){
+                this.generateRandomNumbers(userThresholdInput, userMaxSizeInput);
+    
+                System.out.print("Таны тест дата: \n");
+                this.printArray(this.testData);
+                System.out.println();
+    
+                this.insertionSort();
+    
+                System.out.println("Эрэмбэлэгдсэн дата: ");
+                this.printArray(this.testData);
+            }
+            // Merge Sort || Quicksort
+            else {
+                // System.out.println("Хэрэглэгчийн оруулсан хэмжээ " + app.THRESHOLD + "-аас их байна.");
+    
+                // Merge sort ашигласан хувилбар
+                
+    
+            }
+    }
+
+    private void mergeSort(int[] data, int start, int end){
+        if(start > end){
+            return; 
+        }
+        int mid = (start + end)/2;
+        mergeSort(data, start, mid);
+        mergeSort(data, mid+1, end);
+        
+        fork ->  merge(data, start, mid, end);
+    }
+
+    private void merge(int[] data, int start, int mid, int end){
+        int n1 = mid - start + 1;
+        int n2 = end - mid;
+
+        int[] arr1 = new int[n1];
+        int[] arr2 = new int[n2];
+
+        for(int i=0; i<n1; i++){
+            arr1[i] = data[i];
+        }
+
+        for(int i=0; i<n2; i++){
+            arr2[i] = data[i];
+        }
+
+        int i = 0;
+        int j = 0;
+        int k = start;
+
+        while(i < n1 && j < n2){
+            if(arr1[i] <= arr2[j]){
+                data[k] = arr1[i];
+                i++;
+            }
+            else {
+                data[k] = arr2[j]; 
+                j++;
+            }
+            k++;
+        }
+
+        while(i < n1){
+            data[k] = arr1[i];
+            i++;
+            k++;
+        }
+        
+        while(j < n2){
+            data[k] = arr2[j];
+            j++;
+            k++;
+        }
     }
 
     // Тест дата-г үүсгэх
@@ -22,23 +104,23 @@ class ForkSortingApp {
     }
 
     /* Insertion Sort */
-    void insertionSort(int arr[])
+    void insertionSort()
     {
-        int n = arr.length;
+        int n = testData.length;
         for (int i = 1; i < n; ++i) {
-            int key = arr[i];
+            int key = testData[i];
             int j = i - 1;
 
-            while (j >= 0 && arr[j] > key) {
-                arr[j + 1] = arr[j];
+            while (j >= 0 && testData[j] > key) {
+                testData[j + 1] = testData[j];
                 j = j - 1;
             }
-            arr[j + 1] = key;
+            testData[j + 1] = key;
         }
     }
 
     /* Дата-г хэвлэх */
-    static void printArray(int arr[])
+    public void printArray(int[] arr)
     {
         int n = arr.length;
         for (int i = 0; i < n; ++i)
@@ -48,32 +130,19 @@ class ForkSortingApp {
     }
     
     public static void main(String[] args) throws Exception{
-        ForkSortingApp app = new ForkSortingApp();
+        Scanner scanner = new Scanner(System.in);
 
         System.out.println("\n\nFork-Join эрэмбэлэлтийн программд тавтай морилно уу");
 
         Thread.sleep(3000);
 
         System.out.print("\n-Хэдэн тоо эрэмбэлэхийг оруулна уу: ");
-        int userThresholdInput = app.scanner.nextInt();
+        int userThresholdInput = scanner.nextInt();
         System.out.print("\nЭрэмбэлэх тооны хэмжээ(1000 дотор гэх мэт): ");
-        int userMaxSizeInput = app.scanner.nextInt();
+        int userMaxSizeInput = scanner.nextInt();
         System.out.println();
 
-        // Энгийн эрэмбэлэлтийн алгоритм(Insertion Sort)
-        if(userThresholdInput < app.THRESHOLD){
-            app.generateRandomNumbers(userThresholdInput, userMaxSizeInput);
+        ForkSortingApp app = new ForkSortingApp(userThresholdInput, userMaxSizeInput);
 
-            System.out.print("Таны тест дата: \n");
-            for(int item: app.testData){
-                System.out.print(item + " ");
-            }
-            System.out.println();
-
-        }
-        // Merge Sort || Quicksort
-        else {
-            System.out.println("Хэрэглэгчийн оруулсан хэмжээ " + app.THRESHOLD + "-аас их байна.");
-        }
     }
 }
